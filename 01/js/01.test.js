@@ -26,3 +26,16 @@ describe("modulate", () => {
     expect(calibrator.frequency).toBe(expected)
   })
 })
+
+describe("parse", () => {
+  test("process smoltest", (done) => {
+    const path = "./smoltest"
+    const callback = (calibrator) => {
+      const expected = -6
+      expect(calibrator.frequency).toBe(expected)
+      done()
+    }
+
+    Calibration.from(path, callback)
+  })
+})
