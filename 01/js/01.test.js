@@ -50,3 +50,16 @@ describe("[static] from", () => {
     Calibration.from(path, callback)
   })
 })
+
+describe("[static] frequencyPairFrom", () => {
+  test("process p2smol", (done) => {
+    const path = "./p2smol"
+    const callback = (frequency) => {
+      const expected = 10
+      expect(frequency).toBe(expected)
+      done()
+    }
+
+    Calibration.frequencyPairFrom(path, callback)
+  })
+})
