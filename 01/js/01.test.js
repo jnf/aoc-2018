@@ -1,8 +1,8 @@
-import Calibration from "./01"
+import Calibrator from "./01"
 
 describe("modulate", () => {
   test("handles single positive change", () => {
-    const calibrator = new Calibration()
+    const calibrator = new Calibrator()
     const expected = 1
     calibrator.modulate(1)
 
@@ -10,7 +10,7 @@ describe("modulate", () => {
   })
 
   test("handles single negative change", () => {
-    const calibrator = new Calibration()
+    const calibrator = new Calibrator()
     const expected = -1
     calibrator.modulate(-1)
 
@@ -20,7 +20,7 @@ describe("modulate", () => {
   test("handles stream of mixed changes", () => {
     const stream = [1, 1, -2]
     const expected = 0
-    const calibrator = new Calibration()
+    const calibrator = new Calibrator()
 
     stream.forEach(change => calibrator.modulate(change))
     expect(calibrator.frequency).toBe(expected)
@@ -36,7 +36,7 @@ describe("[static] from", () => {
       done()
     }
 
-    Calibration.from(path, callback)
+    Calibrator.from(path, callback)
   })
 
   test("process p1 input", (done) => {
@@ -47,7 +47,7 @@ describe("[static] from", () => {
       done()
     }
 
-    Calibration.from(path, callback)
+    Calibrator.from(path, callback)
   })
 })
 
@@ -61,7 +61,7 @@ describe("[static] frequencyPairFrom", () => {
       done()
     }
 
-    Calibration.frequencyPairFrom(path, callback)
+    Calibrator.frequencyPairFrom(path, callback)
   })
 
   test("process p2 input", (done) => {
@@ -72,6 +72,6 @@ describe("[static] frequencyPairFrom", () => {
       done()
     }
 
-    Calibration.frequencyPairFrom(path, callback)
+    Calibrator.frequencyPairFrom(path, callback)
   })
 })

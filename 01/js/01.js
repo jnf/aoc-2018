@@ -1,34 +1,30 @@
 import fs from "fs"
 import readline from "readline"
 
-const state = new WeakMap()
-class Calibration {
+class Calibrator {
   constructor (base=0) {
-    state.set(this, { frequency: base })
+    this.frequency = base
+    this.counts = { 0: 1 }
   }
 
   modulate (change=0) {
-    const oldState = state.get(this)
-    const frequency = oldState.frequency + Number(change)
-    state.set(this, { ...oldState, frequency })
+    this.frequency += Number(change)
+    this.counts[this.frequency] = (this.counts[this.frequency] || 0) + 1
   }
 
-  get frequency () { return state.get(this).frequency }
-
   static from (path, callback) {
-    const calibrator = new Calibration
+    const cali = new Calibrator
     const stream = fs.createReadStream(path)
     const reader = readline.createInterface(stream)
 
-    reader.on("line", (line) => calibrator.modulate(line))
-    reader.on("close", () => callback(calibrator))
+    reader.on("line", (line) => cali.modulate(line))
+    reader.on("close", () => callback(cali))
   }
 
   static frequencyPairFrom(path, callback) {
-    const map = { 0: 1 }
-    const calibrator = new Calibration
+    const cali = new Calibrator
     const checker = () => {
-      const pair = Object.entries(map).find(([value, count]) => count > 1)
+      const pair = Object.entries(cali.counts).find(([_, count]) => count > 1)
       if (pair) callback(Number(pair[0]))
       else restreamer()
     }
@@ -39,11 +35,8 @@ class Calibration {
 
       reader.on("close", checker)
       reader.on("line", (line) => {
-        calibrator.modulate(line)
-        const count = (map[calibrator.frequency] || 0) + 1
-        map[calibrator.frequency] = count
-
-        if (count > 1) reader.close() // early exit when we find a double
+        cali.modulate(line)
+        if (cali.counts[cali.frequency] > 1) reader.close()
       })
     }
 
@@ -51,4 +44,4 @@ class Calibration {
   }
 }
 
-export default Calibration
+export default Calibrator
