@@ -52,10 +52,22 @@ describe("[static] from", () => {
 })
 
 describe("[static] frequencyPairFrom", () => {
+  jest.setTimeout(10000)
   test("process p2smol", (done) => {
     const path = "./p2smol"
     const callback = (frequency) => {
       const expected = 10
+      expect(frequency).toBe(expected)
+      done()
+    }
+
+    Calibration.frequencyPairFrom(path, callback)
+  })
+
+  test("process p2 input", (done) => {
+    const path = "./input"
+    const callback = (frequency) => {
+      const expected = 80598
       expect(frequency).toBe(expected)
       done()
     }
