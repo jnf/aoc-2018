@@ -27,11 +27,22 @@ describe("modulate", () => {
   })
 })
 
-describe("parse", () => {
+describe("[static] from", () => {
   test("process smoltest", (done) => {
     const path = "./smoltest"
     const callback = (calibrator) => {
       const expected = -6
+      expect(calibrator.frequency).toBe(expected)
+      done()
+    }
+
+    Calibration.from(path, callback)
+  })
+
+  test("process p1 input", (done) => {
+    const path = "./input"
+    const callback = (calibrator) => {
+      const expected = 595
       expect(calibrator.frequency).toBe(expected)
       done()
     }
