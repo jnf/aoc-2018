@@ -1,17 +1,22 @@
-import fs from "fs"
-
-const howDifferent = (x, y) => Array.from(x).reduce((acc, letter, index) => {
+const isMatchedPair = (x, y) => Array.from(x).reduce((acc, letter, index) => {
   if (letter !== y[index]) acc += 1
   return acc
-}, 0)
+}, 0) === 1
 
 const letterMap = (string) => Array.from(string).reduce((map, letter) => ({
   ...map,
   [letter]: (map[letter] || 0) + 1
 }), {})
 
-export const computeChecksums = (path) => {
-  const lines = fs.readFileSync(path, "utf-8").split("\n")
+export const findPair = (lines=[], comparator=isMatchedPair) => {
+  for (const line of lines) {
+    const pair = lines.find(otherLine => comparator(line, otherLine))
+    if (pair) return [line, pair]
+  }
+
+  return [] // no pair found
+}
+
 export const computeChecksums = (lines=[]) => {
   return lines.reduce((acc, line) => {
     const map = letterMap(line)
