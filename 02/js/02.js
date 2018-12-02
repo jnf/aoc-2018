@@ -12,6 +12,7 @@ const letterMap = (string) => Array.from(string).reduce((map, letter) => ({
 
 export const computeChecksums = (path) => {
   const lines = fs.readFileSync(path, "utf-8").split("\n")
+export const computeChecksums = (lines=[]) => {
   return lines.reduce((acc, line) => {
     const map = letterMap(line)
     if (Object.values(map).some(val => val === 2)) acc.dubs += 1
