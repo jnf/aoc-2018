@@ -10,7 +10,7 @@ const letterMap = (string) => Array.from(string).reduce((map, letter) => ({
   [letter]: (map[letter] || 0) + 1
 }), {})
 
-export const Checksum = (path) => {
+export const computeChecksums = (path) => {
   const lines = fs.readFileSync(path, "utf-8").split("\n")
   return lines.reduce((acc, line) => {
     const map = letterMap(line)
