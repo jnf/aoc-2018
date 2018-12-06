@@ -12,51 +12,51 @@ describe("p1 -- overlapping squares", () => {
 
   test("can insert a line into a new grid", () => {
     // should produce:
-    // . . . [undefined]
-    // . x x [undefined, 1, 1]
-    // . x x [undefined, 1, 1]
+    // . . . []
+    // . x x [, 1, 1]
+    // . x x [, 1, 1]
     const line = [1, 1, 1, 2, 2]
     const actual = insertIntoGrid([], ...line)
-    const expected = [undefined, [undefined, 1, 1], [undefined, 1, 1]]
+    const expected = [, [, 1, 1], [, 1, 1]]
 
     expect(actual).toEqual(expected)
   })
 
   test("gets rows and columns right", () => {
     // new grid should be:
-    // . . x [undefined, undefined, 1]
-    // . . x [undefined, undefined, 1]
-    // . . x [undefined, undefined, 1]
+    // . . x [, , 1]
+    // . . x [, , 1]
+    // . . x [, , 1]
     const line = [3, 2, 0, 1, 3]
     const actual = insertIntoGrid([], ...line)
-    const expected = [[undefined, undefined, 1], [undefined, undefined, 1], [undefined, undefined, 1]]
+    const expected = [[, , 1], [, , 1], [, , 1]]
     expect(actual).toEqual(expected)
   })
 
   test("can insert a new line into an existing grid", () => {
-    const grid = [undefined, [undefined, 1, 1], [undefined, 1, 1]] // same grid as test above
+    const grid = [, [, 1, 1], [, 1, 1]] // same grid as test above
     const line = [2, 0, 0, 2, 2]
 
     // new grid should be:
     // x x . [1, 1]
     // x + x [1, 2, 1]
-    // . x x [undefined, 1, 1]
+    // . x x [, 1, 1]
     const actual = insertIntoGrid(grid, ...line)
-    const expected = [[1, 1], [1, 2, 1], [undefined, 1, 1]]
+    const expected = [[1, 1], [1, 2, 1], [, 1, 1]]
     expect(actual).toEqual(expected)
 
     // new grid should be:
-    // x x . x [1, 1, undefined, 1]
+    // x x . x [1, 1, , 1]
     // x + x x [1, 1, 1, 1]
-    // . x x x [undefined, 1, 1, 1]
+    // . x x x [, 1, 1, 1]
     const line2 = [3, 3, 0, 1, 3]
     const actual2 = insertIntoGrid(grid, ...line2)
-    const expected2 = [[1, 1, undefined, 1], [1, 2, 1, 1], [undefined, 1, 1, 1]]
+    const expected2 = [[1, 1, , 1], [1, 2, 1, 1], [, 1, 1, 1]]
     expect(actual2).toEqual(expected2)
   })
 
   test("can compute area (sum of used indices) of grid", () => {
-    const grid = [[1, 1], [1, 1, 1], [undefined, 1, 1], undefined]
+    const grid = [[1, 1], [1, 1, 1], [, 1, 1], ]
     const actual = computeAreaOfGrid(grid)
 
     expect(actual).toEqual(7)
@@ -82,7 +82,7 @@ describe("p1 -- overlapping squares", () => {
   })
 
   test("can computer overlap (indices used more than once) of grid", () => {
-    const grid = [[1, 1], [1, 2, 4], [undefined, 1, 1], undefined]
+    const grid = [[1, 1], [1, 2, 4], [, 1, 1], ]
     const actual = computeAreaOfGrid(grid, 1)
 
     expect(actual).toEqual(2)

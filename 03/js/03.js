@@ -10,7 +10,7 @@ export const parse = (lines) => lines.map(extractData)
 export const insertIntoGrid = (grid=[], id, left, top, width, height) => {
   for (let y = top; y < top + height; y++) {
     for (let x = left; x < left + width; x++) {
-        if(!grid[y]) grid[y] = []
+        if (!grid[y]) grid[y] = []
         grid[y][x] = (grid[y][x] || 0) + 1
     }
   }
