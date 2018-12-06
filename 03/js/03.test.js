@@ -1,5 +1,5 @@
 import fs from "fs"
-import { computeAreaOfGrid, computeOverlepOfGrid, insertIntoGrid, parse } from "./03"
+import { computeAreaOfGrid, insertIntoGrid, findDistinctClaim, parse } from "./03"
 
 describe("p1 -- overlapping squares", () => {
   test("can parse lines of the input", () => {
@@ -100,5 +100,30 @@ describe("p1 -- overlapping squares", () => {
     const lines = parse(raw)
     const area = computeAreaOfGrid(lines.reduce((g, l) => insertIntoGrid(g, ...l), []), 1)
     expect(area).toEqual(108961)
+  })
+
+  test("can find the distinct claim in a grid (no other claim overlaps)", () => {
+    // 1 1 . 1 [1, 1, , 1]
+    // 1 2 1 1 [1, 1, 1, 1]
+    // . 1 1 1 [, 1, 1, 1]
+    const grid = [[1, 1, , 1], [1, 2, 1, 1], [, 1, 1, 1]]
+    const lines = [
+      [1, 1, 1, 2, 2],
+      [2, 0, 0, 2, 2],
+      [3, 3, 0, 1, 3] // <- this line is distinct; its claim doesn't overlap the other two
+    ]
+
+    // sanity check
+    expect(lines.reduce((testGrid, line) => insertIntoGrid(testGrid, ...line), [])).toEqual(grid)
+
+    expect(findDistinctClaim(grid, lines)).toEqual(lines[2])
+  })
+
+  test("verifies p2 solution", () => {
+    const raw = fs.readFileSync("./input", "utf-8").split("\n").filter(Boolean)
+    const lines = parse(raw)
+    const grid = lines.reduce((building, line) => insertIntoGrid(building, ...line), [])
+
+    expect(findDistinctClaim(grid, lines)).toEqual([681, 696, 238, 25, 24])
   })
 })

@@ -24,3 +24,16 @@ export const computeAreaOfGrid = (grid=[], uses=0) => {
 
   return grid.reduce(rows, 0)
 }
+
+export const findDistinctClaim = (grid=[], claims=[], uses=1) => {
+  const distinct = claims.filter(([id, left, top, width, height]) => {
+    for (let y = top; y < top + height; y++) {
+      for (let x = left; x < left + width; x++) {
+        if (grid[y][x] > uses) return false
+      }
+    }
+    return true
+  })
+
+  return distinct[0]
+}
